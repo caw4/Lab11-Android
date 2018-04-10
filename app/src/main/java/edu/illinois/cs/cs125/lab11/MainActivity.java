@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -13,8 +14,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 /**
  * Main screen for our API testing app.
@@ -63,11 +66,19 @@ public final class MainActivity extends AppCompatActivity {
         try {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.GET,
-                    "",
+                    "https://ghibliapi.herokuapp.com\n",
                     null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(final JSONObject response) {
+                            if (response != null) {
+                                final TextView text = findViewById(R.id.jsonResult);
+                                if (text == null) {
+                                    Log.d(TAG, "null pointer");
+                                } else {
+                                    text.setText(response.toString());
+                                }
+                            }
                             Log.d(TAG, response.toString());
                         }
                     }, new Response.ErrorListener() {
